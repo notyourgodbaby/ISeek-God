@@ -1,0 +1,12 @@
+{
+  "name": "iseekgod-sdk",
+  "version": "0.1.0",
+  "description": "Token ascension metrics engine",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "ISeekGod AI",
+  "license": "MIT"
+}
