@@ -14,15 +14,16 @@ from utils.ai_client import chat
 
 console = Console()
 
-JUPITER_PRICE_API = "https://price.jup.ag/v6/price"
+COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price"
 
+# CoinGecko IDs mapped to display symbols
 TOKENS = {
-    "SOL":  "So11111111111111111111111111111111111111112",
-    "BTC":  "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E",
-    "ETH":  "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
-    "JUP":  "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
-    "BONK": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
-    "WIF":  "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+    "SOL":  "solana",
+    "BTC":  "bitcoin",
+    "ETH":  "ethereum",
+    "JUP":  "jupiter-exchange-solana",
+    "BONK": "bonk",
+    "WIF":  "dogwifcoin",
 }
 
 SYSTEM_PROMPT = """You are Orin, the signal engine for Orin.LAB.
@@ -37,12 +38,15 @@ Reasoning: [2 sentences max]
 Risk Level: [LOW/MEDIUM/HIGH]"""
 
 
-def fetch_price(mint: str) -> float:
+def fetch_price(coingecko_id: str) -> float:
     try:
-        resp = httpx.get(f"{JUPITER_PRICE_API}?ids={mint}", timeout=10)
+        resp = httpx.get(
+            COINGECKO_API,
+            params={"ids": coingecko_id, "vs_currencies": "usd"},
+            timeout=10,
+        )
         resp.raise_for_status()
-        data = resp.json()
-        return float(data["data"].get(mint, {}).get("price", 0))
+        return float(resp.json().get(coingecko_id, {}).get("usd", 0))
     except Exception:
         return 0.0
 
@@ -79,7 +83,7 @@ def run():
             symbol = Prompt.ask("Token (e.g. SOL)").upper()
             mint = TOKENS.get(symbol)
             if not mint:
-                mint = Prompt.ask(f"Mint address for {symbol}")
+                mint = Prompt.ask(f"CoinGecko ID for {symbol} (e.g. 'solana')")
 
             with console.status(f"[dim]Fetching {symbol} price...[/dim]", spinner="dots"):
                 price = fetch_price(mint)
