@@ -9,6 +9,7 @@ from utils.logger import get_logger
 from utils.rate_limiter import anthropic_limiter
 from utils.ai_client import chat, chat_with_image
 from agents.signal_history import SignalHistory
+from agents.technical_analysis import analyze, format_report
 
 logger = get_logger("bot.handlers")
 
@@ -143,6 +144,23 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Photo analysis error: {e}")
         await update.message.reply_text(f"⚠️ Could not analyze chart: {e}")
+
+
+async def handle_ta(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Full technical analysis with RSI, MACD, BB, EMA."""
+    token = " ".join(context.args) if context.args else "SOL"
+    token = token.upper().replace("$", "")
+    msg = update.message or update.callback_query.message
+    await msg.reply_text(f"📐 Running TA on `${token}`...", parse_mode="Markdown")
+    try:
+        import asyncio
+        result = await asyncio.get_event_loop().run_in_executor(None, analyze, token)
+        signal_history.add(token, f"SIGNAL: {result.signal}\nConfidence: {result.confidence}/100")
+        await msg.reply_text(format_report(result), parse_mode="Markdown")
+        logger.info(f"TA completed: {token} → {result.signal} ({result.confidence})")
+    except Exception as e:
+        logger.error(f"TA error: {e}")
+        await msg.reply_text(f"⚠️ Error: {e}")
 
 
 async def handle_history(update: Update, context: ContextTypes.DEFAULT_TYPE):

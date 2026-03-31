@@ -19,6 +19,7 @@ from bot.handlers import (
     handle_help,
     handle_signal,
     handle_analyze,
+    handle_ta,
     handle_photo,
     handle_history,
     handle_message,
@@ -44,6 +45,7 @@ def run():
     app.add_handler(CommandHandler("signal", handle_signal))
     app.add_handler(CommandHandler("analyze", handle_analyze))
     app.add_handler(CommandHandler("history", handle_history))
+    app.add_handler(CommandHandler("ta", handle_ta))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
