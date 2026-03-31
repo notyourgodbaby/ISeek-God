@@ -7,12 +7,20 @@
 ╚══════════════════════════════════════════╝
 """
 
+import os
+from pathlib import Path
 import click
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
 
-load_dotenv()
+# Load from ~/.orinlab/.env first (installed users), then local .env (devs)
+_home_env = Path.home() / ".orinlab" / ".env"
+if _home_env.exists():
+    load_dotenv(_home_env)
+else:
+    load_dotenv()
+
 console = Console()
 
 BANNER = """[bold cyan]
@@ -30,6 +38,13 @@ BANNER = """[bold cyan]
 def cli():
     """Orin.LAB — AI Research Lab for Crypto Markets · $ORNL"""
     console.print(BANNER)
+
+
+@cli.command()
+def setup():
+    """First-time setup — configure API keys interactively"""
+    from cli_setup import run_setup
+    run_setup()
 
 
 @cli.command()
@@ -79,7 +94,7 @@ def onchain():
 @cli.command()
 @click.argument("tokens", nargs=-1)
 def posts(tokens):
-    """Preview natural human-style posts for given tokens (default: SOL BTC ETH)"""
+    """Preview natural posts for given tokens (default: SOL BTC ETH)"""
     from agents.technical_analysis import analyze
     from agents.post_writer import preview_all
 
@@ -93,6 +108,13 @@ def posts(tokens):
         with console.status(f"[dim]Analyzing ${sym}...[/dim]", spinner="dots"):
             results.append(analyze(sym))
     preview_all(results)
+
+
+@cli.command()
+def dashboard():
+    """Live terminal dashboard — prices and signals"""
+    from agents.dashboard import run as run_dash
+    run_dash()
 
 
 if __name__ == "__main__":
