@@ -43,14 +43,14 @@ class TestMetrics:
             timestamp=now - timedelta(days=1),
             market_cap=10000.0,
             holder_count=100,
-            trading_volume=1000.0,
+            trading_volume=150000.0,
             price=0.001,
         )
         snapshot2 = TokenSnapshot(
             timestamp=now,
             market_cap=11000.0,
             holder_count=200,
-            trading_volume=1100.0,
+            trading_volume=160000.0,
             price=0.0011,
         )
         engine.add_snapshot("TEST", snapshot1)
