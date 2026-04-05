@@ -38,13 +38,13 @@ we've been wrong sometimes. but we've been right way more often. tokens we flagg
 
 ## Bio X
 
-ISeekGod. We measure what crypto traders actually need. Ascension, health, karma, purity. 6-tier credibility system based on data, not hype. Skip the noise.
+ISKGOD: Measure token quality through data. Ascension, health, karma, purity. 6-tier credibility system based on data, not hype. CA: 64B4TPEz2VvBDPQUdPXp4ipkKTZFZBDvefJW4pLqpump
 
 ---
 
 ## Bio Pumpfun
 
-Token credibility in real-time. Ascension index, holder adoption, pump resistance. Know the metrics before you risk your money.
+ISKGOD on Solana. Token credibility analyzer. Real growth metrics, holder adoption signals, pump resistance scoring. Know the metrics before you risk money. CA: 64B4TPEz2VvBDPQUdPXp4ipkKTZFZBDvefJW4pLqpump
 
 ---
 

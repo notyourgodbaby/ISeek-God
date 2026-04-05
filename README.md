@@ -15,6 +15,8 @@
 ╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
+**Token:** ISKGOD | **CA:** `64B4TPEz2VvBDPQUdPXp4ipkKTZFZBDvefJW4pLqpump` (Solana)
+
 ---
 
 ## The Problem
